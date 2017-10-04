@@ -16,7 +16,6 @@ export function fetchPosts() {
     };
 }
 
-
 /*
 Summary of what is happening here:
 1. Making the axios request 
