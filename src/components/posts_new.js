@@ -6,15 +6,21 @@ class PostsNew extends Component {
     renderField(field) { //this field object contains event handlers we need for the JSX!
         //If we put an input inside this return, how does the <Field> below know to connect to it?
         //It doesn't - until we use the above field object event handlers!
+        
+        const { meta: {touched, error} } = field; //Destruct meta, and touched/error OFF meta
+        const className= `form-group ${touched && error ? 'has-danger' : ''}`;
+
          return (
-            <div className="form-group">
+            <div className={className}>
                 <label> {field.label} </label> 
                 <input
                     className="form-control"
                     type="text" 
                     {...field.input} //Pull all the event handlers out
                 />
-                {field.meta.error} 
+                <div className="text-help">
+                    {touched ? error: ""} 
+                </div>
             </div> //The field.meta.error connects our error messages to field name
          );
     }
