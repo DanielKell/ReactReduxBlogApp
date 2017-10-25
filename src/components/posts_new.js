@@ -19,9 +19,15 @@ class PostsNew extends Component {
          );
     }
 
+    onSubmit(values) {
+        //this === component
+        console.log(values);
+    }
+
     render() {
-        return (
-            <form>
+        const { handleSubmit } = this.props; //Pulling this off from ReduxForm 
+        return ( //this onSubmit is needed to deal with form submittal
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}> 
                 <Field
                     label="Title for Post" //Connected to the (field.label) above
                     name="title" //What piece of state are we editing?
@@ -37,6 +43,7 @@ class PostsNew extends Component {
                     name="content"
                     component={this.renderField}
                 />
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         );
     }
