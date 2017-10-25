@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import { Field, reduxForm } from 'redux-form'; //Reduxform is similar to connect!
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostsNew extends Component {
     
     renderField(field) { //this field object contains event handlers we need for the JSX!
         //If we put an input inside this return, how does the <Field> below know to connect to it?
         //It doesn't - until we use the above field object event handlers!
-        
+
         const { meta: {touched, error} } = field; //Destruct meta, and touched/error OFF meta
         const className= `form-group ${touched && error ? 'has-danger' : ''}`;
 
@@ -27,6 +30,7 @@ class PostsNew extends Component {
 
     onSubmit(values) {
         //this === component
+        this.props.createPost(values);
         console.log(values);
     }
 
@@ -50,6 +54,7 @@ class PostsNew extends Component {
                     component={this.renderField}
                 />
                 <button type="submit" className="btn btn-primary">Submit</button>
+                <Link to="/" className="btn btn-danger">Cancel </Link>
             </form>
         );
     }
@@ -76,4 +81,6 @@ function validate(values) { //an object that contains all values a user has ente
 export default reduxForm({
     validate: validate,
     form: 'PostsNewForm' //If we show multiple forms, Redux will handle it correctly with this
-}) (PostsNew); //The string must be unique.
+}) (
+    connect(null, {createPost}) (PostsNew)
+); //Two sets of things passed into this helper
