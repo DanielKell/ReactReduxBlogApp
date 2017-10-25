@@ -14,12 +14,12 @@ class PostsNew extends Component {
                     type="text" 
                     {...field.input} //Pull all the event handlers out
                 />
-            </div>
+                {field.meta.error} 
+            </div> //The field.meta.error connects our error messages to field name
          );
     }
 
     render() {
-
         return (
             <form>
                 <Field
@@ -28,8 +28,8 @@ class PostsNew extends Component {
                     component={this.renderField} //Function to display this component
                 />
                 <Field
-                    label="Tags"
-                    name="tags"
+                    label="Categories"
+                    name="categories"
                     component={this.renderField}
                 />
                 <Field
@@ -42,6 +42,25 @@ class PostsNew extends Component {
     }
 }
 
+function validate(values) { //an object that contains all values a user has entered
+    const errors = {};  
+
+    //Validate the inputs from 'values'
+    if (!values.title || values.title.length < 3) { //If the title is empty, display this message!
+        errors.title = "Enter a title with more than 3 characters!";
+    }
+    if (!values.categories) { 
+        errors.categories = "Enter some categories!";
+    }
+    if (!values.content) { 
+        errors.content = "Enter some content!";
+    }
+
+    return errors; //If errors is empty, the form is fine to submit
+    //If errors has any properties, redux form assumes form is invalid
+}
+
 export default reduxForm({
+    validate: validate,
     form: 'PostsNewForm' //If we show multiple forms, Redux will handle it correctly with this
 }) (PostsNew); //The string must be unique.
